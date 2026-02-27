@@ -2,7 +2,6 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-# The Menu data grouped by category
 menu_categories = {
     "Starters": [
         {"name": "Paneer Tikka", "price": "₹250", "image": "https://images.unsplash.com/photo-1628294895950-9805252327bc?auto=format&fit=crop&w=400&q=80"},
@@ -32,6 +31,7 @@ def menu():
 def about():
     return render_template('about.html')
 
+# New Cart Route
 @app.route('/cart')
 def cart():
     return render_template('cart.html')
