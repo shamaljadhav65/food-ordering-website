@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Your Cart</h2>
+    
+    <div class="content-box">
+        <div id="cart-items" style="margin-bottom: 2rem;"></div>
+        
+        <h3 style="text-align: right; border-top: 2px solid #eee; padding-top: 1rem;">
+            Total: ₹<span id="cart-total" style="color: var(--primary-dark);">0</span>
+        </h3>
+        
+        <div style="text-align: right; margin-top: 1rem;">
+            <button onclick="clearCart()" style="background-color: #ccc; border: none; padding: 10px 20px; margin-right: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;">Clear Cart</button>
+            <button onclick="checkout()" style="background-color: var(--accent); color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer;">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        function displayCart() {
+            let cartDisplay = document.getElementById('cart-items');
+            let totalDisplay = document.getElementById('cart-total');
+            let currentCart = JSON.parse(localStorage.getItem('restaurant_cart')) || [];
+            
+            if (currentCart.length === 0) {
+                cartDisplay.innerHTML = "<p style='text-align: center; color: #777;'>Your cart is empty. Let's add some delicious food!</p>";
+                totalDisplay.innerText = "0";
+                return;
+            }
+
+            let htmlString = "";
+            let totalBill = 0;
+
+            currentCart.forEach(function(item) {
+                htmlString += `<div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                                  <span>${item.name}</span>
+                                  <span style="color: var(--primary-dark); font-weight: bold;">₹${item.price}</span>
+                               </div>`;
+                totalBill += item.price;
+            });
+
+            cartDisplay.innerHTML = htmlString;
+            totalDisplay.innerText = totalBill;
+        }
+
+        function clearCart() {
+            localStorage.removeItem('restaurant_cart');
+            if (typeof cart !== 'undefined') {
+                cart = []; 
+                updateCartCount(); 
+            }
+            displayCart(); 
+        }
+
+        function checkout() {
+            let currentCart = JSON.parse(localStorage.getItem('restaurant_cart')) || [];
+            if (currentCart.length === 0) {
+                alert("Your cart is empty! Please add some items first.");
+            } else {
+                alert("Thank you for your order! Your food is being prepared.");
+                clearCart();
+            }
+        }
+
+        displayCart();
+    </script>
+{% endblock %}
